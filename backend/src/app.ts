@@ -8,6 +8,11 @@ import { errorMiddleware } from './middleware/error.middleware.js';
 const app = express();
 
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
 app.use(cookieParser());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
