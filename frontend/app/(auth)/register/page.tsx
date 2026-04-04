@@ -40,6 +40,7 @@ export default function RegisterPage() {
               src="/register-img.png"
               alt="Register Illustration"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-contain scale-[1.15]"
               priority
             />

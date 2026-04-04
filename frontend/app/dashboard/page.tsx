@@ -92,10 +92,6 @@ export default function DashboardPage() {
     }
   }
 
-  function setSearch(value: string): void {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
@@ -116,32 +112,37 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {/* Filters & Search */}
-        <div className="flex flex-wrap items-end gap-6">
-          <div className="flex-1 min-w-[300px] space-y-1">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Search Tasks</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+        {/* Filters & Search - Simple Line Design */}
+        <div className="flex flex-wrap items-end gap-10">
+          <div className="flex-1 min-w-[300px]">
+            <label className="line-label">Search Tasks</label>
+            <div className="flex items-center border-b border-slate-300 focus-within:border-indigo-600 transition-colors bg-white">
+              <Search className="w-5 h-5 text-slate-400 mr-2 ml-1" />
               <input
                 value={state.search}
                 onChange={(e) => setState((prev) => ({ ...prev, search: e.target.value }))}
-                placeholder="Search by title..."
-                className="simple-input !pl-10"
+                placeholder="Find a task..."
+                className="w-full bg-transparent border-none px-0 py-2 outline-none focus:ring-0 text-slate-800 placeholder:text-slate-400 font-medium"
               />
             </div>
           </div>
 
-          <div className="w-48 space-y-1">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Status</label>
-            <select
-              value={state.status}
-              onChange={(e) => setState((prev) => ({ ...prev, status: e.target.value }))}
-              className="simple-input"
-            >
-              <option value="">All Statuses</option>
-              <option value="PENDING">Pending</option>
-              <option value="COMPLETED">Completed</option>
-            </select>
+          <div className="w-56">
+            <label className="line-label">Status</label>
+            <div className="relative border-b border-slate-300 focus-within:border-indigo-600 transition-colors bg-white">
+              <select
+                value={state.status}
+                onChange={(e) => setState((prev) => ({ ...prev, status: e.target.value }))}
+                className="w-full bg-transparent border-none px-2 py-2 outline-none focus:ring-0 text-slate-800 font-medium appearance-none"
+              >
+                <option value="">All Statuses</option>
+                <option value="PENDING">Pending</option>
+                <option value="COMPLETED">Completed</option>
+              </select>
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
+                <Filter className="w-4 h-4 text-slate-400" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -154,12 +155,12 @@ export default function DashboardPage() {
             </div>
           ) : tasks?.length > 0 ? (
             <div className="flex flex-col gap-3">
-              {tasks.map((task: Task, index: number) => (
+              {tasks.map((task: Task) => (
                 <div
                   key={task.id}
-                  className={`p-4 flex items-center rounded-lg justify-between hover:bg-slate-50 transition-colors border border-slate-200 shadow-sm hover:bg-slate-50
-                     ${task.status === 'COMPLETED' ? 'bg-slate-50/50' : 'bg-white'
-                    }`}
+                  className={`p-4 flex items-center rounded-lg justify-between hover:bg-slate-50 transition-colors border border-slate-200 shadow-sm
+                      ${task.status === 'COMPLETED' ? 'bg-slate-50/50' : 'bg-white'
+                     }`}
                 >
                   <div className="flex items-center gap-4 flex-1">
                     <button

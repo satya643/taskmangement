@@ -5,16 +5,21 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { Loader2, Mail, Lock } from 'lucide-react';
+import { Loader2, Mail, Lock, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import api from '@/lib/api';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [is_remember, setIsRemember] = useState(false);
   const router = useRouter();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, clearErrors, setError, formState: { errors } } = useForm<any>();
 
   const onSubmit = async (data: any) => {
+    if (!is_remember) {
+      setError('remember', { type: 'manual', message: 'Please check "Remember Me" to login' });
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await api.post('/auth/login', data);
@@ -77,17 +82,48 @@ export default function LoginPage() {
                 />
               </div>
 
-              <div className="flex items-center justify-between text-sm py-2">
-                <label className="flex items-center gap-2 cursor-pointer text-slate-600">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-slate-300 text-[#1972F5] focus:ring-[#1972F5]"
-                  />
-                  <span>Remember Me</span>
-                </label>
-                <Link href="/forgot-password" className="text-[#1972F5] font-medium hover:underline opacity-80 cursor-not-allowed">
-                  Forgot Password?
-                </Link>
+              <div className="flex flex-col text-sm py-2">
+
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer">
+
+                    <input
+                      type="checkbox"
+                      checked={is_remember}
+                      onChange={(e) => {
+                        setIsRemember(e.target.checked);
+                        if (e.target.checked) clearErrors("remember");
+                      }}
+                      className={`w-4 h-4 rounded text-[#1972F5] focus:ring-[#1972F5] ${errors?.remember
+                        ? "border-red-500 ring-1 ring-red-500"
+                        : "border-slate-300"
+                        }`}
+                    />
+
+                    <span
+                      className={`text-sm ${errors?.remember ? "text-red-500" : "text-slate-600"
+                        }`}
+                    >
+                      Remember Me
+                    </span>
+                  </label>
+
+                  <Link
+                    href="/forgot-password"
+                    className="text-[#1972F5] font-medium hover:underline opacity-80 cursor-not-allowed"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+
+                {/* 🔴 Error Message */}
+                {errors?.remember && (
+                  <div className="flex items-center gap-1 mt-1 text-red-500 text-xs">
+                    <AlertCircle size={14} />
+                    <span>{errors.remember.message as string}</span>
+                  </div>
+                )}
+
               </div>
 
               <div className="pt-2">
