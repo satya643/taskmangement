@@ -9,9 +9,7 @@ A modern, responsive, and full-stack Task Management Application built with the 
 
 ## 🚀 Live Demo
 
-- **Frontend Application:** https://your-frontend.vercel.app
-- **Backend API Server:** https://taskmangement-production-eb42.up.railway.app
-- **Repository:** https://github.com/satya643/taskmangement
+- **LIVE APP URL:** https://taskmangement-inky.vercel.app/
 
 ---
 
